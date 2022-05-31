@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>กินไรยัง?</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+
+    <div id="app">
+      <div class="title">
+        <h1>{{ title }}</h1>
+      </div>
+      <div class="container">
+        <div class="map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5913475012876!2d100.54091561552424!3d13.74317340119441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29edae5f16977%3A0x25b6820ba8b7e5f7!2sMater%20Dei%20School!5e0!3m2!1sen!2sth!4v1654022666314!5m2!1sen!2sth"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div
+          v-if="showResult & searchQuery !== ''"
+          class="matchedFood animate__animated animate__bounceIn"
+        >
+          <div class="text">
+            <h1>
+              {{result}}
+              <span @click="showResult=false; searchQuery=''">&times;</span>
+            </h1>
+            <p v-if="filteredFood.length !== 0">
+              We found some recommended menu for you.
+            </p>
+            <p v-else>We aren't found any menu for you.</p>
+          </div>
+          <table>
+            <tr v-for="food in filteredFood">
+              <td><strong>{{food.name}}</strong></td>
+              <td>Promotion: {{food.promotion}}</td>
+              <td><a href="#" class="">สั่งจากร้านนี้</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="search">
+        <div
+          class="suggestion"
+          v-if="searchQuery.startsWith('ข้าว') & filterSuggested[0] !== searchQuery"
+        >
+          <ul>
+            <li
+              v-for="item in filterSuggested"
+              class="animate__animated animate__bounceIn"
+              @click="searchQuery = item; search()"
+            >
+              {{item}}
+            </li>
+          </ul>
+        </div>
+        <div class="searchBar">
+          <input
+            type="search"
+            name="searchBar"
+            id="searchBar"
+            placeholder="🔍 Find your favourite food..."
+            v-model="searchQuery"
+            @click="showResult=false"
+            @search="search()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
